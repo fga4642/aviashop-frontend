@@ -1,7 +1,8 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {
 	updateOrder,
-	updateSpares
+	updateSpares,
+	updateOrderId
 } from "../../store/orders/orderSlice";
 import {useToken} from "../users/useToken";
 import {api} from "../../utils/api";
@@ -11,6 +12,7 @@ export function useOrder() {
 	const {access_token} = useToken()
 
 	const order = useSelector(state => state.draftOrder.order)
+	const order_id = useSelector(state => state.draftOrder.order_id)
 
 	const is_draft = order?.status == 1
 
@@ -67,17 +69,6 @@ export function useOrder() {
 		}
 	}
 
-	const fetchDraftOrder = async () => {
-
-		const {data} = await api.get(`orders/draft/`, {
-			headers: {
-				'authorization': access_token
-			},
-		})
-
-		setOrder(data)
-
-	}
 
 	const fetchOrder = async (order_id) => {
 
@@ -93,41 +84,40 @@ export function useOrder() {
 
 	const addSpareToOrder = async (spare) => {
 
-		const response = await api.post(`spares/${spare.id}/add_to_order/`, {}, {
+		api.post(`spares/${spare.id}/add_to_order/`, {}, {
 			headers: {
 				'authorization': access_token
 			},
-		});
+		})
 
-		if (response.status == 200) {
-			setOrder(response.data)
-		}
 	}
 
 	const deleteSpareFromOrder = async (spare) => {
-		const response = await api.delete(`orders/${order.id}/delete_spare/${spare.id}/`, {
+		await api.delete(`orders/${order.id}/delete_spare/${spare.id}/`, {
 			headers: {
 				'authorization': access_token
 			},
 		});
 
-		if (response.status == 200) {
-			console.log(response.data)
-			setOrder(response.data)
-		}
+		await fetchOrder(order_id)
+	}
+
+	const setOrderId = (value) => {
+		dispatch(updateOrderId(value))
 	}
 
 	return {
 		order,
+		order_id,
 		is_draft,
 		setOrder,
 		setSpares,
 		saveOrder,
 		sendOrder,
 		deleteOrder,
-		fetchDraftOrder,
 		fetchOrder,
 		addSpareToOrder,
-		deleteSpareFromOrder
+		deleteSpareFromOrder,
+		setOrderId
 	};
 }

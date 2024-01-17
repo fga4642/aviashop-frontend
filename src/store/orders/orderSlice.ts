@@ -1,7 +1,8 @@
 import {createSlice} from "@reduxjs/toolkit"
 
 const initialState = {
-	order: undefined
+	order: undefined,
+	order_id: undefined
 };
 
 const orderSlice = createSlice({
@@ -13,10 +14,13 @@ const orderSlice = createSlice({
 		},
 		updateSpares(state, action){
 			state.order.spares = action.payload
+		},
+		updateOrderId(state, action) {
+			state.order_id = action.payload
 		}
 	}
 })
 
-export const {updateOrder, updateSpares} = orderSlice.actions;
+export const {updateOrder, updateSpares, updateOrderId} = orderSlice.actions;
 
 export default orderSlice.reducer;

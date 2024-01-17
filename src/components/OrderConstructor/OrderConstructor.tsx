@@ -1,28 +1,24 @@
 import "./OrderConstructor.sass"
 import {useOrder} from "../../hooks/orders/useOrder";
 import {Link} from "react-router-dom";
-import {useEffect} from "react";
 
 const OrderConstructor = () => {
 
-    const {order, fetchDraftOrder} = useOrder()
+    const {order_id} = useOrder()
 
-    useEffect(() => {
-        fetchDraftOrder()
-    }, [])
+    console.log(order_id)
 
-    if (order == undefined) {
+    if (!order_id) {
         return (
-            <div className="order-constructor-container disabled">
+            <div className="constructor-container disabled">
                 <span className="title">Новый заказ</span>
             </div>
         )
     }
 
     return (
-        <Link to={`/orders/${order.id}`} className="order-constructor-container">
+        <Link to={`/orders/${order_id}`} className="constructor-container">
             <span className="title">Новый заказ</span>
-            {order.spares.length > 0 && <span className="badge">{order.spares.length}</span>}
         </Link>
     )
 }

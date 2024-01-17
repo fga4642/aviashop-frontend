@@ -4,6 +4,7 @@ import {useQuery} from "react-query";
 import {useSpares} from "../../../hooks/spares/useSpares";
 import {useCustomTable} from "../../../hooks/other/useCustomTable";
 import {useNavigate } from "react-router-dom";
+import SparesFilters from "../SparesFilters/SparesFilters";
 
 const SparesTable = () => {
     const COLUMNS = [
@@ -33,22 +34,20 @@ const SparesTable = () => {
         }
     ]
 
-    const {searchSpares, query, queryPageIndex, queryPageSize, totalCount, setSparesPage, setSparesPageSize, setSparesPageTotalCount} = useSpares()
+    const {searchSpares, queryPageIndex, queryPageSize, totalCount, setSparesPage, setSparesPageSize, setSparesPageTotalCount} = useSpares()
 
     const navigate = useNavigate()
 
     const fetchData = async () => {
         const data = await searchSpares()
 
-        if (queryPageIndex * queryPageSize > data["totalCount"]) {
-            gotoPage(0)
-        }
+        gotoPage(0)
 
         return data
     }
 
     const { isLoading, data, isSuccess, refetch } = useQuery(
-        ["spares", searchSpares, query, queryPageIndex, queryPageSize],
+        ["spares", searchSpares, queryPageIndex, queryPageSize],
         () => fetchData(),
         {
             keepPreviousData: true,
@@ -87,7 +86,7 @@ const SparesTable = () => {
     }
 
     return (
-        <div>
+        <div className="spares-list-wrapper">
 
             <CustomTable
                 getTableProps={getTableProps}
@@ -105,7 +104,9 @@ const SparesTable = () => {
                 prepareRow={prepareRow}
                 isLoading={isLoading}
                 onClick={openEditSparePage}
-            />
+            >
+                <SparesFilters refetch={refetch}/>
+            </CustomTable>
 
         </div>
 

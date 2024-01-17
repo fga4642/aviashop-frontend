@@ -7,19 +7,23 @@ import {Link} from "react-router-dom";
 import {useSpares} from "../../../hooks/spares/useSpares";
 
 
-const SparesFilters = () => {
+const SparesFilters = ({refetch}) => {
 
     const {is_moderator} = useAuth()
 
     const {query, setQuery} = useSpares()
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        refetch()
+    }
 
     return (
         <div className="top">
 
             <h2>Поиск авизапчастей</h2>
 
-            <div className="filters-container">
-
+            <div className="right-container">
                 {is_moderator &&
                     <Link to="/spares/create" style={{textDecoration: "none"}}>
                         <CustomButton bg={variables.primary}>
@@ -28,12 +32,17 @@ const SparesFilters = () => {
                     </Link>
                 }
 
-                <SearchBar query={query} setQuery={setQuery} placeholder="Поиск..."/>
+                <form className="filters-container" onSubmit={handleSubmit}>
 
-                <CustomButton bg={variables.primary}>
-                    Поиск
-                </CustomButton>
+                    <SearchBar query={query} setQuery={setQuery} placeholder="Поиск..."/>
+
+                    <CustomButton bg={variables.primary}>
+                        Поиск
+                    </CustomButton>
+
+                </form>
             </div>
+
 
         </div>
     )

@@ -11,10 +11,8 @@ const ProfilePage = () => {
     const {is_moderator, user_name, user_email, logOut} = useAuth()
 
     const doLogOut = async () => {
-
         await logOut()
-
-        navigate("/spares")
+        navigate("/")
     }
 
     return (

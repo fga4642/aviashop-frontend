@@ -44,7 +44,7 @@ const SpareAddPage = () => {
         if (response.status == 200){
             const spare_id = response.data["id"]
             await updateSpare(spare_id)
-            navigate("/spares/")
+            navigate("/")
         }
 
     }

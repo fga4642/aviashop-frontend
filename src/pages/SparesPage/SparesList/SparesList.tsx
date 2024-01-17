@@ -2,12 +2,19 @@ import {useSpares} from "../../../hooks/spares/useSpares";
 import SpareCard from "../../../components/SpareCard/SpareCard";
 import "./SparesList.sass"
 import {useEffect, useState} from "react";
+import SparesFilters from "../SparesFilters/SparesFilters";
 
 const SparesList = () => {
 
     const [fetching, setFetching] = useState(true)
 
     const { spares, query, searchSpares, setSpares, queryPageIndex, setSparesPage } = useSpares()
+
+    const refetch = () => {
+        setSpares([])
+        setSparesPage(0)
+        setFetching(!fetching)
+    }
 
     const pageSize = 8
 
@@ -26,7 +33,7 @@ const SparesList = () => {
         setSpares([])
         setSparesPage(0)
         setFetching(!fetching)
-    }, [query])
+    }, [])
 
     useEffect(() => {
         document.addEventListener("scroll", scrollHandler)
@@ -42,13 +49,19 @@ const SparesList = () => {
     }
 
     const cards = spares.map(spare => (
-        <SpareCard spare={spare} key={spare.id}/>
+        <SpareCard spare={spare} key={spare.id} refetch={refetch}/>
     ))
 
     return (
-        <div className="bottom">
+        <div className="spares-list-wrapper">
 
-            { cards }
+            <SparesFilters refetch={refetch}/>
+
+            <div className="bottom">
+
+                { cards }
+
+            </div>
 
         </div>
     )

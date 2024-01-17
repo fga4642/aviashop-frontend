@@ -17,6 +17,8 @@ import {QueryClient, QueryClientProvider } from "react-query";
 import SpareEditPage from "./pages/SpareEditPage/SpareEditPage";
 import SpareAddPage from "./pages/SpareAddPage/SpareAddPage";
 import OrderPage from "./pages/OrderPage/OrderPage";
+import SparesList from "./pages/SparesPage/SparesList/SparesList";
+import SparesTable from "./pages/SparesPage/SparesTable/SparesTable";
 
 const TopPanelWrapper = () => {
     const {is_authenticated, is_moderator} = useAuth()
@@ -25,7 +27,7 @@ const TopPanelWrapper = () => {
     return (
         <div className="top-panels-wrapper">
             <Breadcrumbs />
-            {is_authenticated && !is_moderator && location.pathname.endsWith("spares") && <OrderConstructor /> }
+            {is_authenticated && !is_moderator && location.pathname.endsWith("spares-list") && <OrderConstructor /> }
         </div>
     )
 }
@@ -55,9 +57,11 @@ function App() {
 
                             <Routes>
 
-                                <Route path="/" element={<Navigate to="/spares" replace />} />
+                                <Route path="/" element={<Navigate to="/spares-list" replace />} />
 
-                                <Route path="/spares" element={<SparesPage />} />
+                                <Route path="/spares-list" element={<SparesList />} />
+
+                                <Route path="/spares-table" element={<SparesTable />} />
 
                                 <Route path="/spares/:id" element={<SparePage  />} />
 

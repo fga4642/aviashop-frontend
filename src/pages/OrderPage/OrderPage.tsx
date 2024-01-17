@@ -7,7 +7,7 @@ import {useAuth} from "../../hooks/users/useAuth";
 import {STATUSES} from "../../Consts";
 import {ru} from "../../utils/momentLocalization";
 import moment from "moment";
-import {plural, pluralDeliveryDate} from "../../utils/plural";
+import {pluralDeliveryDate} from "../../utils/plural";
 
 const OrderPage = () => {
 
@@ -45,7 +45,7 @@ const OrderPage = () => {
 
     const onDeleteOrder = async () => {
         await deleteOrder()
-        navigate("/spares")
+        navigate("/")
     }
 
     const cards = order?.spares.map(spare  => (

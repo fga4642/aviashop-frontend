@@ -1,5 +1,4 @@
 import {createSlice} from "@reduxjs/toolkit"
-import {act} from "react-dom/test-utils";
 
 const initialState= {
 	queryPageIndex: 0,
@@ -7,7 +6,7 @@ const initialState= {
 	totalCount: 0,
 	status: -1,
 	date_start: "2013-10-12",
-	date_end: "2023-10-12",
+	date_end: "2024-10-12",
 	user: ""
 };
 

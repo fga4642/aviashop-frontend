@@ -18,7 +18,8 @@ const Breadcrumbs = () => {
     const resetSelectedSpare = () => setSpare(undefined)
 
     const topics = {
-        "spares": "Авиазапчасти",
+        "spares-list": "Авиазапчасти",
+        "create": "Новая авиазапчасть",
         "orders": "Заказы",
         "home": "Главная",
         "login": "Вход",
@@ -26,7 +27,7 @@ const Breadcrumbs = () => {
         "profile": "Профиль"
     }
 
-    const exclude_topics = ["edit", "create"]
+    const exclude_topics = ["edit"]
 
     const crumbs = location.pathname.split('/').filter(crumb => crumb !== '').map(crumb => {
 
@@ -34,6 +35,20 @@ const Breadcrumbs = () => {
 
         if (exclude_topics.find(x => x == crumb)) {
             return
+        }
+
+        if (crumb == "spares") {
+            return (
+                <div className={"crumb"} key={crumb}>
+
+                    <Link to="spares-list" onClick={resetSelectedSpare}>
+                        Авиазапчасти
+                    </Link>
+
+                    <FaChevronRight className={"chevron-icon"}/>
+
+                </div>
+            )
         }
 
         if (Object.keys(topics).find(x => x == crumb)) {
@@ -88,7 +103,7 @@ const Breadcrumbs = () => {
 
                 <div className="crumb">
 
-                    <Link to={"/spares"}>
+                    <Link to={"/"}>
                         <FaHome className="home-icon" />
                     </Link>
 

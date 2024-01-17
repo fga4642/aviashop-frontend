@@ -7,6 +7,8 @@ import {
 	totalCountChanged
 } from "../../store/spares/sparesSlice";
 import {api} from "../../utils/api";
+import {useToken} from "../users/useToken";
+import {useOrder} from "../orders/useOrder";
 
 export function useSpares() {
 	const spares = useSelector(state => state.spares.spares);
@@ -16,6 +18,10 @@ export function useSpares() {
 	const totalCount = useSelector(state => state.spares.totalCount);
 
 	const dispatch = useDispatch()
+
+	const {access_token} = useToken()
+
+	const {setOrderId} = useOrder()
 
 	const setSpares = (value) => {
 		dispatch(updateSpares(value))
@@ -41,16 +47,30 @@ export function useSpares() {
 
 		const offset = pageNumber * pageSize
 
-		const {data} = await api.get(`spares/search`, {
+		const {data} = await api.get(`spares/search/`, {
 			params: {
 				query: query,
 				offset: offset,
 				limit: pageSize
+			},
+			headers: {
+				'authorization': access_token
 			}
 		})
 
+		const draft_order_id = data.draft_order_id
+		setOrderId(draft_order_id)
+
 		return data
 
+	}
+
+	const deleteSpare = async (spare) => {
+		await api.delete(`spares/${spare.id}/delete/`, {
+			headers: {
+				'authorization': access_token
+			}
+		})
 	}
 
 	return {
@@ -64,6 +84,7 @@ export function useSpares() {
 		queryPageSize,
 		setSparesPageSize,
 		totalCount,
-		setSparesPageTotalCount
+		setSparesPageTotalCount,
+		deleteSpare
 	};
 }

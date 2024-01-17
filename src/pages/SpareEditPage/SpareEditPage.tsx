@@ -9,6 +9,7 @@ import CustomButton from "../../components/CustomButton/CustomButton";
 import {api} from "../../utils/api";
 import {useToken} from "../../hooks/users/useToken";
 import UploadButton from "../../components/UploadButton/UploadButton";
+import {useSpares} from "../../hooks/spares/useSpares";
 
 const SpareEditPage = () => {
 
@@ -19,7 +20,7 @@ const SpareEditPage = () => {
     const { id } = useParams<{id: string}>();
 
     const {
-        spare ,
+        spare,
         fetchSpareData,
         setSpareName,
         setSpareDescription,
@@ -28,6 +29,8 @@ const SpareEditPage = () => {
         setSpareRating,
         setSpareImage
     } = useSpare()
+
+    const {deleteSpare} = useSpares()
 
     useEffect(() => {
         if (id != undefined) {
@@ -67,23 +70,14 @@ const SpareEditPage = () => {
 
         if (response.status == 200) {
             setImg(undefined)
-            navigate("/spares/")
+            navigate("/")
         }
     }
 
-    const deleteSpare = async () => {
-
-        const response = await api.delete(`spares/${spare.id}/delete/`, {
-            headers: {
-                'authorization': access_token
-            }
-        })
-
-        if (response.status == 200) {
-            setImg(undefined)
-            navigate("/spares/")
-        }
-
+    const handleDeleteSpare = async () => {
+        await deleteSpare(spare)
+        setImg(undefined)
+        navigate("/")
     }
 
     if (id == undefined) {
@@ -133,7 +127,7 @@ const SpareEditPage = () => {
                             Сохранить
                         </CustomButton>
 
-                        <CustomButton bg={variables.red} onClick={deleteSpare}>
+                        <CustomButton bg={variables.red} onClick={handleDeleteSpare}>
                             Удалить
                         </CustomButton>
 

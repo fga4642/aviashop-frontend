@@ -10,6 +10,8 @@ const NavMenu = () => {
 
     const [isOpen, setIsOpen] = useState(false)
 
+    const {is_moderator} = useAuth()
+
     useEffect(() => {
         auth()
     }, []);
@@ -19,9 +21,15 @@ const NavMenu = () => {
 
             <div className={"menu-wrapper " + (isOpen ? "open" : "")}>
 
-                <Link to="/spares" className="menu-item" onClick={(e) => setIsOpen(false)}>
+                <Link to="/spares-list" className="menu-item" onClick={(e) => setIsOpen(false)}>
                     <span>Авиазапчасти</span>
                 </Link>
+
+                {is_moderator &&
+                    <Link to="/spares-table" className="menu-item" onClick={(e) => setIsOpen(false)}>
+                        <span>Таблица авиазапчастей</span>
+                    </Link>
+                }
 
                 {is_authenticated &&
                     <Link to="/orders" className="menu-item" onClick={(e) => setIsOpen(false)}>

@@ -32,13 +32,8 @@ export const OrdersTable = () => {
 			Cell: ({ value }) => { return STATUSES.find(status => status.id == value).name }
 		},
 		{
-			Header: "Пользователь",
-			accessor: "owner",
-			Cell: ({ value }) => { return value.name }
-		},
-		{
 			Header: "Дата формирования",
-			accessor: "date_of_formation",
+			accessor: "date_formation",
 			Cell: ({ value }) => { return moment(value).locale(ru()).format("D MMMM HH:mm") }
 		},
 		{
@@ -55,6 +50,12 @@ export const OrdersTable = () => {
 	]
 
 	if (is_moderator) {
+		COLUMNS.push({
+			Header: "Пользователь",
+				accessor: "owner",
+			Cell: ({ value }) => { return value.name }
+		})
+
 		COLUMNS.push({
 			Header: "Действие",
 			accessor: "accept_button",

@@ -20,7 +20,7 @@ const LoginPage = () => {
 
         if (flag) {
 
-            navigate("/spares")
+            navigate("/")
 
         }
     }
@@ -29,7 +29,7 @@ const LoginPage = () => {
     const handleAuth = async () => {
         const flag = await auth()
         if (flag) {
-            navigate("/spares")
+            navigate("/")
         }
     }
 
